@@ -19,9 +19,9 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 		ClearScreenFull(true, true);
 		loadtga(true,false,"Launcher9/bg/bg.tga",0,0);
 		drawimage(titre, 140, 5,119, 19);
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 30, true, "START:Poweroff");
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 20, true, "SELECT:Reboot");
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 10, true, "A : start Payload");
+		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 30, true, "A : Start Payload");
+		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 20, true, "START:Poweroff");
+		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 10, true, "START+SELECT:Reboot");
 		if (CheckSD()) {
 			DrawStringFColor(WHITE, TRANSPARENT, 5, SCREEN_HEIGHT - 30, true, "SD storage:  %lluMB", TotalStorageSpace() / (1024*1024));
 			DrawStringFColor(WHITE, TRANSPARENT, 5, SCREEN_HEIGHT - 20, true, "      Used:  %lluMB", TotalStorageSpace() / (1024*1024) - RemainingStorageSpace() / (1024*1024));
@@ -125,11 +125,10 @@ u32 ProcessMenu()
 			
 		}
 		if (pad_state & BUTTON_START) {
-           PowerOff();
+           (pad_state & BUTTON_SELECT) ? Reboot() : PowerOff();
+		   
         }
-        if (pad_state & BUTTON_SELECT) {
-           Reboot();
-        }
+        
 		
 		DrawMenu(count, index, full_draw);
         
