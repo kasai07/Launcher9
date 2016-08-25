@@ -37,17 +37,24 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 	snprintf(pathtga, 60, "%s/%s%s", PATHLOGO, c[index], TGA);
 	loadtga(false,true,pathtga,0,0);
 	
-	menupos.pos = 0;
+	
 	
 	for (u32 i = 0; i < count; i++) 
 	{
 		drawimage(button, 80, 30 + (i*13),240, 11);
 		if(i >= 12)break;
 	}
-		
-	if(count >=13)
-	if(index >= 12)menupos.pos = (index - 12);
-		
+	
+	if(index == 0)menupos.pos2 = 0;	
+	if(count > 12)
+	{
+		if((menupos.pos2 + 12) < index)menupos.pos2++;
+		if((menupos.pos2 + 12) > count){menupos.pos2 = (count - 12);}
+		if(menupos.pos2 > index)menupos.pos2--;
+		if(index == count - 1)menupos.pos2 = count - 13;
+	}
+	menupos.pos = menupos.pos2;
+	
 	for (u32 i = 0; i < count; i++) 
 	{
 		if(menupos.pos != index)
