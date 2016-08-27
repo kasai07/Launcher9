@@ -31,6 +31,7 @@
 
 static char debugstr[DBG_N_CHARS_X * DBG_N_CHARS_Y] = { 0 };
 
+
 void ClearScreen(u8* screen, int width, int color)
 {
     if (color == COLOR_TRANSPARENT) color = COLOR_BLACK;
@@ -254,3 +255,4 @@ u32 drawimage(char* data, int posX, int posY,int tailleX, int tailleY)
 		}			
 	}
 }
+

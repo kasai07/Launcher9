@@ -28,8 +28,6 @@ typedef unsigned char	uchar;
 }
 
 #define PATHLOGO			"/Launcher9/logo"
-
-#define MENU "Menu.tga"
 #define TGA ".tga"
 
 typedef struct

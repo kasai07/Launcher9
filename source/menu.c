@@ -49,7 +49,6 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 	if(count > 12)
 	{
 		if((menupos.pos2 + 12) < index)menupos.pos2++;
-		if((menupos.pos2 + 12) > count){menupos.pos2 = (count - 12);}
 		if(menupos.pos2 > index)menupos.pos2--;
 		if(index == count - 1)menupos.pos2 = count - 13;
 	}
@@ -119,11 +118,24 @@ u32 ProcessMenu()
 			index = (index == 0) ? count - 1 : index - 1;
 			
 			
+		} else if (pad_state & BUTTON_LEFT) {
+           
+		   index = (index >= 1) ? index - 2 : count - 1;
+           
+			
+		} else if (pad_state & BUTTON_RIGHT) {
+            
+			index = (index <= count - 3) ? index + 2 : 0;
+			
+			
 		} else if (pad_state & BUTTON_X) {
             
 			Screenshot(NULL);
 			
+		} else {
+			full_draw = false;
 		}
+		
 		if (pad_state & BUTTON_START) {
            (pad_state & BUTTON_SELECT) ? Reboot() : PowerOff();
 		   
