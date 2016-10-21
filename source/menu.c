@@ -9,7 +9,78 @@
 #include "button.h"
 #include "titre.h"
 
-//int count
+void DrawMenu(u32 count, u32 index, bool fullDraw);
+
+u32 Menu_Launcher()
+{
+    
+	
+	u32 count = PathMenu();
+    
+	u32 index = 0;
+	bool full_draw = false;
+	
+	DrawMenu(count, index, true);
+	u8 boot = 1;
+    while (true) 
+	{
+        
+		if (boot == 1)
+		{
+			if(WaitBootInput(3) == 1)
+			{
+				loadPayload(777);	
+			} else {	
+				boot = 0;
+			}
+		}
+		u32 pad_state = InputWait();
+		
+		if (pad_state & BUTTON_A) {
+            
+			loadPayload(index);
+			
+		} else if (pad_state & BUTTON_DOWN) {
+           
+		   index = (index == count - 1) ? 0 : index + 1;
+           
+			
+		} else if (pad_state & BUTTON_UP) {
+            
+			index = (index == 0) ? count - 1 : index - 1;
+			
+			
+		} else if (pad_state & BUTTON_LEFT) {
+           
+		    index = (index <= 0) ? count - 1 : index - 1;
+           
+			
+		} else if (pad_state & BUTTON_RIGHT) {
+            
+			index = ((index + 1) % count);
+			
+		} else if (pad_state & BUTTON_X) {
+            
+			Screenshot(NULL);
+			
+		} else if (pad_state & BUTTON_POWER) {
+		   
+		   PowerOff();
+			
+		} else if (pad_state & BUTTON_HOME) {
+		   
+		   Reboot();  
+			
+		} else {
+			full_draw = false;
+		}
+		
+		DrawMenu(count, index, full_draw);
+        
+    }
+    
+}
+
 void DrawMenu(u32 count, u32 index, bool fullDraw)
 {
     
@@ -18,26 +89,22 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
         
 		ClearScreenFull(true, true);
 		loadtga(true,false,"Launcher9/bg/bg.tga",0,0);
+		
 		drawimage(titre, 140, 5,119, 19);
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 30, true, "A : Start Payload");
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 20, true, "START:Poweroff");
-		DrawStringFColor(WHITE, TRANSPARENT, 200, SCREEN_HEIGHT - 10, true, "START+SELECT:Reboot");
-		if (CheckSD()) {
-			DrawStringFColor(WHITE, TRANSPARENT, 5, SCREEN_HEIGHT - 30, true, "SD storage:  %lluMB", TotalStorageSpace() / (1024*1024));
-			DrawStringFColor(WHITE, TRANSPARENT, 5, SCREEN_HEIGHT - 20, true, "      Used:  %lluMB", TotalStorageSpace() / (1024*1024) - RemainingStorageSpace() / (1024*1024));
-			DrawStringFColor(WHITE, TRANSPARENT, 5, SCREEN_HEIGHT - 10, true, "      Free:  %lluMB", RemainingStorageSpace() / (1024*1024));
-		} else {
-			DrawStringFColor(RED  , TRANSPARENT, 5, SCREEN_HEIGHT - 20, true, "SD storage: unknown filesystem");
-		}
+		
+		DrawStringFColor(WHITE, TRANSPARENT, 10, 230, true, "A:Start Payload");
+		DrawStringFColor(WHITE, TRANSPARENT, 150, 230, true, "Power:Poweroff");
+		DrawStringFColor(WHITE, TRANSPARENT, 290, 230, true, "Home:Reboot");
 	}
 	
-	ClearScreenFull(false, true);
 	
 	char pathtga[60];
-	snprintf(pathtga, 60, "%s/%s%s", PATHLOGO, c[index], TGA);
-	loadtga(false,true,pathtga,0,0);
-	
-	
+	snprintf(pathtga, 60, "/Launcher9/logo/%s%s",c[index], TGA);
+	if(loadtga(false,true,pathtga,0,0) != 0)
+	{
+		ClearScreenFull(false, true);
+		DrawStringFColor(WHITE, TRANSPARENT, 160 - ((9 * 8) / 2), 120, false, "No Logo !");
+	}
 	
 	for (u32 i = 0; i < count; i++) 
 	{
@@ -81,70 +148,4 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 		menupos.pos++;
 		if(i >= 12)break;
 	}
-}
-
-u32 ProcessMenu()
-{
-    
-	//Mise en memoire des noms des payload dans le "char c"
-	//et retourne "count" le nombre de payload present
-	
-	u32 count = PathMenu();
-    
-	u32 index = 0;
-    u32 result = MENU_EXIT_REBOOT;
-	bool full_draw = false;
-	
-	int screenshot = 0;
-	DrawMenu(count, index, true);
-	
- // main processing loop
-    while (true) 
-	{
-        
-		u32 pad_state = InputWait();
-		
-		if (pad_state & BUTTON_A) {
-            
-			loadPayload(index);
-			
-		} else if (pad_state & BUTTON_DOWN) {
-           
-		   index = (index == count - 1) ? 0 : index + 1;
-           
-			
-		} else if (pad_state & BUTTON_UP) {
-            
-			index = (index == 0) ? count - 1 : index - 1;
-			
-			
-		} else if (pad_state & BUTTON_LEFT) {
-           
-		   index = (index >= 1) ? index - 2 : count - 1;
-           
-			
-		} else if (pad_state & BUTTON_RIGHT) {
-            
-			index = (index <= count - 3) ? index + 2 : 0;
-			
-			
-		} else if (pad_state & BUTTON_X) {
-            
-			Screenshot(NULL);
-			
-		} else {
-			full_draw = false;
-		}
-		
-		if (pad_state & BUTTON_START) {
-           (pad_state & BUTTON_SELECT) ? Reboot() : PowerOff();
-		   
-        }
-        
-		
-		DrawMenu(count, index, full_draw);
-        
-    }
-    
-    return result;
 }

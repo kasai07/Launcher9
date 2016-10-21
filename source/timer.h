@@ -21,3 +21,7 @@ void timer_stop( void );
 u64 timer_ticks( void );
 u64 timer_msec( void );
 u64 timer_sec( void );
+
+size_t heure();
+size_t minute();
+size_t seconde();

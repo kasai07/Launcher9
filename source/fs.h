@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-#define WORK_DIRS   "/payload_a9lh"
+#define WORK_DIRS   ""
 
 bool InitFS();
 void DeinitFS();

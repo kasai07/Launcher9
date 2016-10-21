@@ -18,9 +18,9 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 export TARGET	:=	Launcher9
 BUILD		:=	build
-SOURCES		:=	source source/fatfs source/abstraction source/payload source/tga source/images
+SOURCES		:=	source source/fatfs source/abstraction source/payload source/tga source/images source/arm11bg
 DATA		:=	data
-INCLUDES	:=	source source/fatfs source/payload source/tga source/images
+INCLUDES	:=	source source/fatfs source/payload source/tga source/images source/arm11bg
 
 #---------------------------------------------------------------------------------
 # THEME: if set to anything, name of the themes file folder inside resources
@@ -62,7 +62,7 @@ LIBS	:=
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(CTRULIB)
+LIBDIRS	:=
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -156,7 +156,7 @@ release:
 	@[ -d $(RELEASE) ] || mkdir -p $(RELEASE)
 	@[ -d $(RELEASE)/3DS ] || mkdir -p $(RELEASE)/3DS
 	@[ -d $(RELEASE)/3DS/$(TARGET) ] || mkdir -p $(RELEASE)/3DS/$(TARGET)
-	@[ -d $(RELEASE)/EmuNAND9 ] || mkdir -p $(RELEASE)/EmuNAND9
+	@[ -d $(RELEASE)/Launcher9 ] || mkdir -p $(RELEASE)/Launcher9
 	@cp $(OUTPUT_D)/Launcher.dat $(RELEASE)
 	@-cp $(OUTPUT).bin $(RELEASE)
 	@-cp $(OUTPUT).dat $(RELEASE)
@@ -165,12 +165,12 @@ release:
 	@-cp $(OUTPUT).smdh $(RELEASE)/3DS/$(TARGET)
 	@-cp README.md $(RELEASE)
 	@[ -d $(RELEASE)/starterGen ] || mkdir -p $(RELEASE)/starterGen
-	@-[ "$(TARGET)" != "BootPayload9" ] || cp $(OUTPUT).bin $(STARTER)/extstarterpack/arm9payloads
-	@-[ "$(TARGET)" = "BootPayload9" ] || (([ -d $(STARTER)/extstarterpack/3DS/$(TARGET) ] || mkdir $(STARTER)/extstarterpack/3DS/$(TARGET)) && cp $(RELEASE)/3DS/$(TARGET)/*.* $(STARTER)/extstarterpack/3DS/$(TARGET))
+	@-[ "$(TARGET)" != "Launcher9" ] || cp $(OUTPUT).bin $(STARTER)/extstarterpack/arm9payloads
+	@-[ "$(TARGET)" = "Launcher9" ] || (([ -d $(STARTER)/extstarterpack/3DS/$(TARGET) ] || mkdir $(STARTER)/extstarterpack/3DS/$(TARGET)) && cp $(RELEASE)/3DS/$(TARGET)/*.* $(STARTER)/extstarterpack/3DS/$(TARGET))
 	@-[ ! -n "$(strip $(THEME))" ] || (mkdir $(RELEASE)/$(THEME) && cp $(CURDIR)/resources/$(THEME)/*.bin $(RELEASE)/$(THEME))
 	@-[ ! -n "$(strip $(THEME))" ] || (([ -d $(STARTER)/extstarterpack/$(THEME) ] || mkdir $(STARTER)/extstarterpack/$(THEME)) && cp $(CURDIR)/resources/$(THEME)/*.bin $(STARTER)/extstarterpack/$(THEME))
 	@-make --no-print-directory -C $(STARTER) -f $(STARTER)/Makefile
-	@-cp $(STARTER)/output/starter.bin $(RELEASE)/EmuNAND9
+	@-cp $(STARTER)/output/starter.bin $(RELEASE)/Launcher9
 	@-cp $(STARTER)/output/drop_zip_here.* $(RELEASE)/starterGen
 	@-cp $(STARTER)/output/ZIP3DSFX.3dsx $(RELEASE)/starterGen
 	@-7z a $(RELEASE)/$(TARGET)-`date +'%Y%m%d-%H%M%S'`.zip $(RELEASE)/*

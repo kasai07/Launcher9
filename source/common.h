@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef unsigned int	uint;
+typedef unsigned char	uchar;
+
 #define u8 uint8_t
 #define u16 uint16_t
 #define u32 uint32_t

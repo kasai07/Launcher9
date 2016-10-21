@@ -1,9 +1,10 @@
 #include "tga.h"
+#include "draw.h"
 #include "fatfs/ff.h"
 
 static FIL file;
 
-ui32 fileRead(void *dest, const char *path)
+u32 Readtga(void *dest, const char *path)
 {
     
    
@@ -28,7 +29,7 @@ ui32 fileRead(void *dest, const char *path)
 
 
 
-void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight)
+u32 loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight)
 {	
 	int point0 = 0;
 	tga_header_t data;
@@ -36,7 +37,7 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 	int dir = 0;
 						
 	
-	if(fileRead(&data, path) == SUCCESS_OK)
+	if(Readtga(&data, path) == 0)
 	{
 		
 		int width  = data.width2 * 256 + data.width1;					
@@ -47,7 +48,7 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 		{	 
 			for(int j = 0; j < width; j++)	
 			{
-				if(data.pixel_depth == 24)//24bits
+				if(data.pixel_depth == 24)//24bit
 				{
 					b = (data.data[dir++]);
 					g = (data.data[dir++]);
@@ -55,7 +56,7 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 					
 					
 				}	
-				if(data.pixel_depth == 32)//32bits
+				if(data.pixel_depth == 32)//32bit
 				{
 					
 					b = (data.data[dir++]);
@@ -70,16 +71,15 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 				{
 					if(a == 0)
 					{
-						ui32 passe = (HEIGHT * poswidth+j + HEIGHT - posheight+i ) * BPP;
-						*((ui8*)TOP_RIGHT_SCREEN + passe++);
-						*((ui8*)TOP_RIGHT_SCREEN + passe++);
-						*((ui8*)TOP_RIGHT_SCREEN + passe++);
+						u32 passe = (SCREEN_HEIGHT * poswidth+j + SCREEN_HEIGHT - posheight+i ) * BYTES_PER_PIXEL;
+						*((u8*)TOP_SCREEN0 + passe++);
+						*((u8*)TOP_SCREEN0 + passe++);
+						*((u8*)TOP_SCREEN0 + passe++);
 						
 						
 					}else
 					{
-						SET_PIXEL(TOP_RIGHT_SCREEN, (poswidth+j), (posheight+i), RGBCOLOR(r,g,b));
-						SET_PIXEL(TOP_LEFT_SCREEN, (poswidth+j), (posheight+i), RGBCOLOR(r,g,b));
+						SET_PIXEL(TOP_SCREEN0, (poswidth+j), (posheight+i), RGB(r,g,b));
 					}
 				}
 				if(bot_screen)//0 bot scrren
@@ -87,15 +87,15 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 					
 					if(a == 0)
 					{
-						ui32 passe = (HEIGHT * poswidth+j + HEIGHT - posheight+i ) * BPP;
-						*((ui8*)BOTTOM_SCREEN + passe++);
-						*((ui8*)BOTTOM_SCREEN + passe++);
-						*((ui8*)BOTTOM_SCREEN + passe++);
+						u32 passe = (SCREEN_HEIGHT * poswidth+j + SCREEN_HEIGHT - posheight+i ) * BYTES_PER_PIXEL;
+						*((u8*)BOT_SCREEN0 + passe++);
+						*((u8*)BOT_SCREEN0 + passe++);
+						*((u8*)BOT_SCREEN0 + passe++);
 						
 						
 					}else
 					{
-						SET_PIXEL(BOTTOM_SCREEN, (poswidth+j), (posheight+i), RGBCOLOR(r,g,b));
+						SET_PIXEL(BOT_SCREEN0, (poswidth+j), (posheight+i), RGB(r,g,b));
 					}
 				}
 				
@@ -103,5 +103,8 @@ void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int pos
 			}			
 		}
 		
-	}
+		
+	} else return 1;
+	
+	return 0;
 }

@@ -1,5 +1,5 @@
 #include "timer.h"
-
+#include "i2c.h"
 void timer_start( void ) {
     // reset / deactivate timers
     *TIMER_CNT0 = 0;
@@ -34,3 +34,18 @@ u64 timer_msec( void ) {
 u64 timer_sec( void ) {
     return timer_ticks() / TICKS_PER_SEC;
 }
+
+size_t seconde()
+{
+    return i2cReadRegister(I2C_DEV_MCU, 0x30);
+}
+size_t minute()
+{
+    return i2cReadRegister(I2C_DEV_MCU, 0x31);
+}
+size_t heure()
+{
+    return i2cReadRegister(I2C_DEV_MCU, 0x32);
+}
+
+

@@ -26,8 +26,6 @@ u32 fileReadad(void *dest, const char *path)
 u32 loadPayload(u32 index)
 {
 	
-	
-   
 	const unsigned char loader[160] = {
     0x02, 0x00, 0x00, 0xEA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xA0, 0xE1, 0x00, 0x00, 0xA0, 0xE1,
     0x00, 0xC0, 0x9F, 0xE5, 0x1C, 0xFF, 0x2F, 0xE1, 0x79, 0xFF, 0xFF, 0x24, 0x00, 0x00, 0x00, 0x00,
@@ -42,10 +40,12 @@ u32 loadPayload(u32 index)
 	};
 	
 	char path[60];
-	snprintf(path, 60, "%s/%s%s", PATH, c[index] ,BIN);
+	
+	if(index == 777)
+	{snprintf(path, 60, "/Launcher9/arm9loaderhax.bin");}
+	else{snprintf(path, 60, "/Launcher9/payload/%s.bin",c[index]);}
 	
 	u32 *const loaderAddress = (u32 *)0x24FFFF00;
-
     memcpypayload(loaderAddress, loader, 160);
 	
     loaderAddress[1] = fileReadad((void *)0x24F00000, path);

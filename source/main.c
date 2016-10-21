@@ -2,23 +2,19 @@
 #include "draw.h"
 #include "fs.h"
 #include "menu.h"
-#include "payload.h"
-
+#include "screen.h"
 
 
 
 
 int main()
 {
-    
+    screenInit();
 	ClearScreenFull(true, true);
 	DebugClear();
 	InitFS();
-	RemainingStorageSpace();
+
+	Menu_Launcher();
 	
-	u32 menu_exit = ProcessMenu();
-    
-    DeinitFS();
-    (menu_exit == MENU_EXIT_REBOOT) ? Reboot() : PowerOff();
-    return 0;
+	return 0;
 }

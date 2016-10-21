@@ -1,30 +1,11 @@
+#include "draw.h"
 
-#define bool	_Bool
-#define true	1
-#define false	0
-
-typedef __UINT8_TYPE__ __uint8_t;
-typedef __uint8_t ui8;
-typedef __UINT32_TYPE__ __uint32_t;
-typedef __uint32_t ui32 ;
-typedef unsigned int	uint;
-typedef unsigned char	uchar;
-
-#define SUCCESS_OK 0
-
-#define RGBCOLOR(r,g,b) (r<<24|b<<16|g<<8|r)
-#define TOP_RIGHT_SCREEN (ui8*)(*(ui32*)0x23FFFE00)
-#define TOP_LEFT_SCREEN (ui8*)(*(ui32*)0x23FFFE04)
-#define BOTTOM_SCREEN (ui8*)(*(ui32*)0x23FFFE08)
-
-#define BPP 3
-#define HEIGHT 240
 #define SET_PIXEL(buffer, x, y, rgb)\
 {\
-	ui32 offset = (HEIGHT * x + HEIGHT - y ) * BPP;\
-	*((ui8*)buffer + offset++) = rgb >> 16;\
-	*((ui8*)buffer + offset++) = rgb >> 8;\
-	*((ui8*)buffer + offset++) = rgb & 0xFF;;\
+	u32 offset = (SCREEN_HEIGHT * x + SCREEN_HEIGHT - y ) * BYTES_PER_PIXEL;\
+	*((u8*)buffer + offset++) = rgb >> 16;\
+	*((u8*)buffer + offset++) = rgb >> 8;\
+	*((u8*)buffer + offset++) = rgb & 0xFF;;\
 }
 
 #define PATHLOGO			"/Launcher9/logo"
@@ -57,6 +38,6 @@ typedef struct
 
 
 
-void loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight);
+u32 loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight);
 
-ui32 fileRead(void *dest, const char *path);
+u32 Readtga(void *dest, const char *path);
