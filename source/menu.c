@@ -92,9 +92,9 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 		
 		drawimage(titre, 140, 5,119, 19);
 		
-		DrawStringFColor(WHITE, TRANSPARENT, 10, 230, true, "A:Start Payload");
-		DrawStringFColor(WHITE, TRANSPARENT, 150, 230, true, "Power:Poweroff");
-		DrawStringFColor(WHITE, TRANSPARENT, 290, 230, true, "Home:Reboot");
+		DrawStringFColor(WHITE, TRANSPARENT, 10, 230, true, "A: Boot Payload");
+		DrawStringFColor(WHITE, TRANSPARENT, 150, 230, true, "POWER: Power off");
+		DrawStringFColor(WHITE, TRANSPARENT, 290, 230, true, "HOME: Reboot");
 	}
 	
 	
