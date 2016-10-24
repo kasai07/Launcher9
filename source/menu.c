@@ -29,7 +29,8 @@ u32 Menu_Launcher()
 		{
 			if(WaitBootInput(3) == 1)
 			{
-				loadPayload(777);	
+				loadPayload(777);
+			
 			} else {	
 				boot = 0;
 			}
@@ -99,7 +100,7 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 	
 	
 	char pathtga[60];
-	snprintf(pathtga, 60, "/Launcher9/logo/%s%s",c[index], TGA);
+	snprintf(pathtga, 60, "/Launcher9/logo/%s.tga",c[index]);
 	if(loadtga(false,true,pathtga,0,0) != 0)
 	{
 		ClearScreenFull(false, true);

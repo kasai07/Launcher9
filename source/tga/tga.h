@@ -9,7 +9,7 @@
 }
 
 #define PATHLOGO			"/Launcher9/logo"
-#define TGA ".tga"
+
 
 typedef struct
 {
