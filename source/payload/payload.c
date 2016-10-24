@@ -49,7 +49,8 @@ u32 loadPayload(u32 index)
     memcpypayload(loaderAddress, loader, 160);
 	
     loaderAddress[1] = fileReadad((void *)0x24F00000, path);
-
+	if(loaderAddress[1] == 0)return 0;
+	
     flushDCacheRange(loaderAddress, 160);
     flushICacheRange(loaderAddress, 160);
     ((void (*)())loaderAddress)();
