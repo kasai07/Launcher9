@@ -106,12 +106,26 @@ void DrawMenu(u32 count, u32 index, bool fullDraw)
 		ClearScreenFull(false, true);
 		DrawStringFColor(WHITE, TRANSPARENT, 160 - ((9 * 8) / 2), 120, false, "No Logo !");
 	}
-	
-	for (u32 i = 0; i < count; i++) 
+	//--------------
+	if(Readtga(&data, "/Launcher9/bg/barre.tga") == 0)
 	{
-		drawimage(button, 80, 30 + (i*13),240, 11);
-		if(i >= 12)break;
+		int width  = data.width2 * 256 + data.width1;
+		for (u32 i = 0; i < count; i++) 
+		{
+			drawtga_top(200 - (width / 2), 30 + (i*13));
+			if(i >= 12)break;
+		}
+		
+	}else{
+		
+		for (u32 i = 0; i < count; i++) 
+		{
+			drawimage(button, 80, 30 + (i*13),240, 11);
+			if(i >= 12)break;
+		}
 	}
+	//---------------
+	
 	
 	if(index == 0)menupos.pos2 = 0;	
 	if(count > 12)

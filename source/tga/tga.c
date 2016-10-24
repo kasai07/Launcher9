@@ -32,7 +32,6 @@ u32 Readtga(void *dest, const char *path)
 u32 loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight)
 {	
 	int point0 = 0;
-	tga_header_t data;
 	int r, g, b, a = 1;
 	int dir = 0;
 						
@@ -108,3 +107,98 @@ u32 loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posh
 	
 	return 0;
 }
+
+u32 drawtga_top(int posX, int posY)
+{
+	u8 r, g, b, a = 1;
+	int dir = 0;
+	int width  = data.width2 * 256 + data.width1;					
+	int height = data.height2 * 256 + data.height1;
+	
+	for(int i = height; 0 < i; i--)
+	{	 
+		
+		for(int j = 0; j < width; j++)	
+		{
+			
+			if(data.pixel_depth == 24)//24bit
+				{
+					b = (data.data[dir++]);
+					g = (data.data[dir++]);
+					r = (data.data[dir++]);
+					
+					
+				}	
+				if(data.pixel_depth == 32)//32bit
+				{
+					
+					b = (data.data[dir++]);
+					g = (data.data[dir++]);
+					r = (data.data[dir++]);
+					a = (data.data[dir++]);
+					
+					
+				}
+			
+			if(a == 0x00)
+			{
+				u32 passe = (240 * posX+j + 240 - posY+i ) * 3;
+				*((u8*)TOP_SCREEN0 + passe++);
+				*((u8*)TOP_SCREEN0 + passe++);
+				*((u8*)TOP_SCREEN0 + passe++);
+				
+			}else
+			{
+				SET_PIXEL(TOP_SCREEN0, (posX+j), (posY+i), RGB(r,g,b));
+			}
+		}			
+	}
+}
+
+u32 drawtga_bot(int posX, int posY)
+{
+	u8 r, g, b, a = 1;
+	int dir = 0;
+	int width  = data.width2 * 256 + data.width1;					
+	int height = data.height2 * 256 + data.height1;
+	
+	for(int i = height; 0 < i; i--)
+	{	 
+		
+		for(int j = 0; j < width; j++)	
+		{
+			
+			if(data.pixel_depth == 24)//24bit
+				{
+					b = (data.data[dir++]);
+					g = (data.data[dir++]);
+					r = (data.data[dir++]);
+					
+					
+				}	
+				if(data.pixel_depth == 32)//32bit
+				{
+					
+					b = (data.data[dir++]);
+					g = (data.data[dir++]);
+					r = (data.data[dir++]);
+					a = (data.data[dir++]);
+					
+					
+				}
+			
+			if(a == 0x00)
+			{
+				u32 passe = (240 * posX+j + 240 - posY+i ) * 3;
+				*((u8*)BOT_SCREEN0 + passe++);
+				*((u8*)BOT_SCREEN0 + passe++);
+				*((u8*)BOT_SCREEN0 + passe++);
+				
+			}else
+			{
+				SET_PIXEL(BOT_SCREEN0, (posX+j), (posY+i), RGB(r,g,b));
+			}
+		}			
+	}
+}
+

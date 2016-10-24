@@ -34,6 +34,7 @@ typedef struct
 	char data[288000];//400 * 240 * 3 = 288000
 }tga_header_t;
 
+tga_header_t data;
 
 
 
@@ -41,3 +42,6 @@ typedef struct
 u32 loadtga(bool top_screen, bool bot_screen, char* path, int poswidth, int posheight);
 
 u32 Readtga(void *dest, const char *path);
+
+u32 drawtga_top(int posX, int posY);
+u32 drawtga_bot(int posX, int posY);
