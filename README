@@ -1,6 +1,44 @@
-*merci a @d0k3 pour ces codes sources*
 
-*Merci a AuroraWright pour son code source de luma3ds*
+
+
+
+
+
+
+LAUNCHER9 manager de payload arm9loarderhax
+
+sd / launcher9 / arm9loaderhax.bin (luma3ds)
+sd / arm9loaderhax.bin (launcher9)
+sd / launcher9 / payload / luma3ds.bin
+sd / launcher9 / payload / decrypt9.bin
+sd / launcher9 / payload / emunand9.bin
+ect ...
+sd / launcher9 / logo / decrypt9.tga
+sd / launcher9 / logo / emunand9.tga
+ect...
+in the BG folder contains the background that can be changed by another
+the 400x240 screen size to tga
+
+http://image.online-convert.com/convert-to-tga
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Merci a @d0k3 pour ces codes sources*
+
+
 
 
 
